@@ -88,3 +88,6 @@ Once running, visit [http://localhost:8000/docs](http://localhost:8000/docs) for
 - `GET /traffic`: Fetch recent data.
 - `GET /traffic/count`: Total record count.
 - `POST /clean`: Truncates dataset. Requires `{ "command": "sudo" }` in the request body.
+
+## Production: on RENDER swagger URL
+[https://conneqtedagents-assesment.onrender.com/docs](https://conneqtedagents-assesment.onrender.com/docs)
