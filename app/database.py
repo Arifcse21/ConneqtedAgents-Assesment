@@ -9,7 +9,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 
 if not DATABASE_URL:
     SERVER_TYPE = os.getenv("SERVER_TYPE", "dev")
-    if SERVER_TYPE == "prod":
+    if SERVER_TYPE == "production":
         # In production (Render), we expect the DATABASE_URL to be set
         # We fail early to avoid connecting to a default dev DB in prod
         raise ValueError("DATABASE_URL environment variable must be set when SERVER_TYPE is 'production'")

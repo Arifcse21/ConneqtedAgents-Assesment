@@ -35,8 +35,10 @@ def run_migrations_offline() -> None:
         server_type = os.getenv("SERVER_TYPE", "dev")
         if server_type == "dev":
             url = "postgresql://conneqtedagents:conneqtedagents@localhost:6543/traffic_db"
-        else:
+        elif server_type == "production":
             raise ValueError("DATABASE_URL must be set when SERVER_TYPE is 'production'")
+        else:
+            raise ValueError("SERVER_TYPE must be 'dev' or 'production'")
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -62,8 +64,10 @@ def run_migrations_online() -> None:
         server_type = os.getenv("SERVER_TYPE", "dev")
         if server_type == "dev":
             url = "postgresql://conneqtedagents:conneqtedagents@localhost:6543/traffic_db"
-        else:
+        elif server_type == "production":
              raise ValueError("DATABASE_URL must be set when SERVER_TYPE is 'production'")
+        else:
+            raise ValueError("SERVER_TYPE must be 'dev' or 'production'")
     
     configuration["sqlalchemy.url"] = url
     
