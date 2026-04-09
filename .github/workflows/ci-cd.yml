@@ -1,0 +1,35 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.14"
+
+    - name: Install uv
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+    - name: Build Docker image
+      run: |
+        docker build -t traffic-monitor:${{ github.sha }} .
+
+    - name: Deploy to Render
+      env:
+        RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+      run: |
+        if [ -n "$RENDER_DEPLOY_HOOK" ]; then
+          curl -X POST "$RENDER_DEPLOY_HOOK"
+        else
+          echo "RENDER_DEPLOY_HOOK secret is not set. Skipping deployment."
+        fi

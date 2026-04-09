@@ -18,12 +18,6 @@ import os
 from app.models import Base
 target_metadata = Base.metadata
 
-# other values from the config, defined by the needs of env.py,
-# can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
-# ... etc.
-
-
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
 
@@ -36,7 +30,13 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = os.getenv("DATABASE_URL", config.get_main_option("sqlalchemy.url"))
+    url = os.getenv("DATABASE_URL")
+    if not url:
+        server_type = os.getenv("SERVER_TYPE", "dev")
+        if server_type == "dev":
+            url = "postgresql://conneqtedagents:conneqtedagents@localhost:6543/traffic_db"
+        else:
+            raise ValueError("DATABASE_URL must be set when SERVER_TYPE is 'production'")
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -56,8 +56,16 @@ def run_migrations_online() -> None:
 
     """
     configuration = config.get_section(config.config_ini_section)
-    if "DATABASE_URL" in os.environ:
-        configuration["sqlalchemy.url"] = os.environ["DATABASE_URL"]
+    
+    url = os.getenv("DATABASE_URL")
+    if not url:
+        server_type = os.getenv("SERVER_TYPE", "dev")
+        if server_type == "dev":
+            url = "postgresql://conneqtedagents:conneqtedagents@localhost:6543/traffic_db"
+        else:
+             raise ValueError("DATABASE_URL must be set when SERVER_TYPE is 'production'")
+    
+    configuration["sqlalchemy.url"] = url
     
     connectable = engine_from_config(
         configuration,
