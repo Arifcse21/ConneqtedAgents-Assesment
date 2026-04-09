@@ -43,5 +43,5 @@ USER appuser
 # Expose the API port
 EXPOSE 8000
 
-# Use the entrypoint script to run migrations then start the server
+# Use the entrypoint script to run migrations then start supervisord
 CMD ["./scripts/entrypoint.sh"]

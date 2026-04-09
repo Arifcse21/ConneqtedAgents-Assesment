@@ -17,3 +17,6 @@ def create_traffic_data(db: Session, traffic_data: schemas.TrafficDataCreate):
     db.commit()
     db.refresh(db_traffic)
     return db_traffic
+
+def get_traffic_count(db: Session):
+    return db.query(models.TrafficData).count()

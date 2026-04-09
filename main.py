@@ -17,6 +17,14 @@ def get_db():
     finally:
         db.close()
 
+@app.get("/")
+def read_root():
+    return {
+        "message": "Welcome to the Smart City Traffic Monitoring System",
+        "docs": "/docs",
+        "health": "/health"
+    }
+
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
@@ -28,3 +36,8 @@ def create_traffic(traffic_data: schemas.TrafficDataCreate, db: Session = Depend
 @app.get("/traffic", response_model=List[schemas.TrafficData])
 def read_traffic(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_traffic_data(db, skip=skip, limit=limit)
+
+@app.get("/traffic/count")
+def read_traffic_count(db: Session = Depends(get_db)):
+    count = crud.get_traffic_count(db)
+    return {"count": count}

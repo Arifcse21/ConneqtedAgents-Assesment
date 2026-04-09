@@ -6,6 +6,6 @@ set -e
 echo "Running database migrations..."
 uv run alembic upgrade head
 
-# Start the application
-echo "Starting FastAPI application..."
-exec uv run fastapi run main.py --port 8000
+# Start the application manager (supervisord)
+echo "Starting multi-process manager (supervisord)..."
+exec uv run supervisord -c supervisord.conf
