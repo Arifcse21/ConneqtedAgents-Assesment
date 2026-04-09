@@ -17,3 +17,6 @@ class TrafficData(TrafficDataBase):
 
     class Config:
         orm_mode = True
+
+class CleanRequest(BaseModel):
+    command: str

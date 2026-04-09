@@ -41,3 +41,11 @@ def read_traffic(skip: int = 0, limit: int = 100, db: Session = Depends(get_db))
 def read_traffic_count(db: Session = Depends(get_db)):
     count = crud.get_traffic_count(db)
     return {"count": count}
+
+@app.post("/clean")
+def clean_db(request: schemas.CleanRequest, db: Session = Depends(get_db)):
+    if request.command != "sudo":
+        raise HTTPException(status_code=403, detail="Permission denied. Incorrect power command.")
+    
+    crud.clean_traffic_data(db)
+    return {"message": "Database cleaned successfully."}

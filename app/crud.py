@@ -20,3 +20,8 @@ def create_traffic_data(db: Session, traffic_data: schemas.TrafficDataCreate):
 
 def get_traffic_count(db: Session):
     return db.query(models.TrafficData).count()
+
+def clean_traffic_data(db: Session):
+    db.query(models.TrafficData).delete()
+    db.commit()
+    return True

@@ -80,3 +80,11 @@ This application is configured for deployment on **Render** via GitHub Actions.
 
 ## API Documentation
 Once running, visit [http://localhost:8000/docs](http://localhost:8000/docs) for the interactive Swagger UI.
+
+### Key Endpoints:
+- `GET /`: Root info.
+- `GET /health`: Health check.
+- `POST /traffic`: Ingest data.
+- `GET /traffic`: Fetch recent data.
+- `GET /traffic/count`: Total record count.
+- `POST /clean`: Truncates dataset. Requires `{ "command": "sudo" }` in the request body.
